@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://server.vodep39240327.workers.dev/channel/raw?=m3u";
+const STREAM_URL = "https://tiny.cc/Pocket-TV";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
