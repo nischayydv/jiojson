@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://jiotvandsony.teachub.workers.dev/?t=teachub";
+const STREAM_URL = "https://servertvhub.site/api/playlist.php";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
