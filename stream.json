@@ -648,8 +648,8 @@
     "user_agent": "servertvhub"
   },
   "73": {
-    "kid": "0ed103b742333873dd6500941a9bb7ed",
-    "key": "33867eed1d8ee5b39f5fbc72631d7037",
+    "kid": "0449d593e6bb5a81a7ab5c5986e5940b",
+    "key": "c0abc7e159389031e53a4b8dfa53d141",
     "url": "https://jiotvioslive.cdn.jio.com/bpk-tv/SonySAB_BTS/output/index.mpd?__hdnea__=st=1775301880~exp=1775388280~acl=/*~hmac=468049b62169c0d43d4b2d956a24e016844866a247ce13eca906f406565f781b",
     "group_title": "Entertainment",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_SAB_HD.png",
@@ -10287,8 +10287,8 @@
     "user_agent": "servertvhub"
   },
   "1144": {
-    "kid": "7d1893ecbbef5872a37dfadbbc304bb9",
-    "key": "dcbcecbf01a838c3336d732a40296efb",
+    "kid": "2a1a2b85777a564ba74e8f38ab063def",
+    "key": "695f02cdce09b8e5aa7ab9fdeb596bbe",
     "url": "https://jiotvioslive.cdn.jio.com/bpk-tv/SonyMAX1_BTS/output/index.mpd?__hdnea__=st=1775301880~exp=1775388280~acl=/*~hmac=468049b62169c0d43d4b2d956a24e016844866a247ce13eca906f406565f781b",
     "group_title": "English",
     "tvg_logo": "https://jiotvimages.cdn.jio.com/dare_images/images/SonyMAX1.png",
