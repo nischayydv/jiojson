@@ -1,37 +1,81 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://yowaimo.in/api/?key=sf_273199baba4b1dac7ae30eb617adef2d&format=json";
+const STREAM_URL = "https://raw.githubusercontent.com/alex4528x/m3u/refs/heads/main/jtv.m3u";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
   try {
-    const response = await axios.get(STREAM_URL);
-    const data = response.data;
+    const response = await axios.get(STREAM_URL, { responseType: "text" });
+    const lines = response.data.split("\n");
 
     const result = {};
 
-    for (const channel of data.channels) {
-      const licenseKey = channel.drm?.license_key || "";
-      const [kid, key] = licenseKey.includes(":") ? licenseKey.split(":") : [null, null];
-      const tvgId = channel.tvg_id || channel.name;
-      const cleanUrl = channel.stream_url ? channel.stream_url.split("&xxx=")[0] : null;
+    let currentKid = null;
+    let currentKey = null;
+    let currentTvgId = null;
+    let currentGroup = null;
+    let currentLogo = null;
+    let currentChannel = null;
+    let currentUserAgent = null;
 
-      if (kid && key && tvgId) {
-        result[tvgId] = {
-          kid: kid,
-          key: key,
+    for (const line of lines) {
+      const trimmed = line.trim();
+
+      // Extract info from #EXTINF
+      if (trimmed.startsWith("#EXTINF:")) {
+        const tvgIdMatch = trimmed.match(/tvg-id="(\d+)"/);
+        const groupMatch = trimmed.match(/group-title="([^"]+)"/);
+        const logoMatch = trimmed.match(/tvg-logo="([^"]+)"/);
+        const channelMatch = trimmed.match(/,(.*)$/);
+
+        currentTvgId = tvgIdMatch ? tvgIdMatch[1] : null;
+        currentGroup = groupMatch ? groupMatch[1] : null;
+        currentLogo = logoMatch ? logoMatch[1] : null;
+        currentChannel = channelMatch ? channelMatch[1] : null;
+      }
+
+      // Extract kid and key
+      else if (trimmed.startsWith("#KODIPROP:inputstream.adaptive.license_key=")) {
+        const [kid, key] = trimmed.split("=")[1].split(":");
+        currentKid = kid;
+        currentKey = key;
+      }
+
+      // Extract user-agent
+      else if (trimmed.startsWith("#EXTVLCOPT:http-user-agent=")) {
+        currentUserAgent = trimmed.split("=")[1];
+      }
+
+      // Extract URL after license
+      else if (currentKid && currentKey && currentTvgId && trimmed.startsWith("http")) {
+        // Remove extra &xxx=... if present
+        const cleanUrl = trimmed.split("&xxx=")[0];
+
+        result[currentTvgId] = {
+          kid: currentKid,
+          key: currentKey,
           url: cleanUrl,
-          group_title: channel.group || null,
-          tvg_logo: channel.logo || null,
-          channel_name: channel.name || null,
-          user_agent: channel.http_headers?.["User-Agent"] || null
+          group_title: currentGroup,
+          tvg_logo: currentLogo,
+          channel_name: currentChannel,
+          user_agent: currentUserAgent
         };
+
+        // Reset for next entry
+        currentKid = null;
+        currentKey = null;
+        currentTvgId = null;
+        currentGroup = null;
+        currentLogo = null;
+        currentChannel = null;
+        currentUserAgent = null;
       }
     }
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(result, null, 2), "utf-8");
     console.log("✅ stream.json saved successfully.");
+
   } catch (err) {
     console.error("❌ Failed to fetch M3U:", err.message);
     process.exit(1);
