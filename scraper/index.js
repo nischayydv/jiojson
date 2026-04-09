@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://raw.githubusercontent.com/alex4528x/m3u/refs/heads/main/jtv.m3u";
+const STREAM_URL = "https://yowaimo.in/api/?key=sf_273199baba4b1dac7ae30eb617adef2d&format=json";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
