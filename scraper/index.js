@@ -3,120 +3,88 @@ const fs = require("fs");
 
 const STREAM_URL = "https://pocket-tv-tamil-5afe35.gitlab.io/jiostar.m3u";
 const OUTPUT_FILE = "stream.json";
-const CONCURRENCY = 50; // simultaneous key fetches
-
-// Semaphore to limit concurrency
-function createPool(limit) {
-  let active = 0;
-  const queue = [];
-  const run = async (fn, resolve, reject) => {
-    active++;
-    try { resolve(await fn()); }
-    catch (e) { reject(e); }
-    finally {
-      active--;
-      if (queue.length) {
-        const next = queue.shift();
-        run(next.fn, next.resolve, next.reject);
-      }
-    }
-  };
-  return (fn) => new Promise((resolve, reject) => {
-    if (active < limit) run(fn, resolve, reject);
-    else queue.push({ fn, resolve, reject });
-  });
-}
-
-async function fetchKey(pool, keyUrl) {
-  return pool(async () => {
-    try {
-      const res = await axios.get(keyUrl, {
-        timeout: 5000,
-        responseType: "text",
-        headers: { "User-Agent": "Mozilla/5.0" }
-      });
-      return res.data.trim();
-    } catch {
-      return null;
-    }
-  });
-}
-
-function parseM3U(text) {
-  const lines = text.split("\n");
-  const entries = [];
-  let cur = {};
-
-  for (const line of lines) {
-    const t = line.trim();
-    if (!t || t === "#EXTM3U") continue;
-
-    if (t.startsWith("#EXTINF:")) {
-      cur = {};
-      cur.tvgId   = (t.match(/tvg-id="(\d+)"/)        || [])[1] || null;
-      cur.group   = (t.match(/group-title="([^"]+)"/)  || [])[1] || null;
-      cur.logo    = (t.match(/tvg-logo="([^"]+)"/)     || [])[1] || null;
-      cur.channel = (t.match(/,(.*)$/)                 || [])[1]?.trim() || null;
-    }
-    else if (t.startsWith("#KODIPROP:inputstream.adaptive.license_key=")) {
-      cur.keyUrl = t.substring(t.indexOf("=") + 1).trim();
-    }
-    else if (t.startsWith("#EXTVLCOPT:http-user-agent=")) {
-      const ua = t.split("=").slice(1).join("=").trim();
-      cur.userAgent = ua === "@allinone_reborn" ? null : ua;
-    }
-    else if (cur.tvgId && t.startsWith("http")) {
-      cur.url = t;
-      entries.push({ ...cur });
-      cur = {};
-    }
-  }
-  return entries;
-}
 
 async function fetchAndSaveJson() {
-  const t0 = Date.now();
-  console.log("📡 Fetching M3U playlist...");
+  try {
+    const response = await axios.get(STREAM_URL, { responseType: "text" });
+    const lines = response.data.split("\n");
 
-  const response = await axios.get(STREAM_URL, { responseType: "text" });
-  const entries = parseM3U(response.data);
-  console.log(`✅ Parsed ${entries.length} channels in ${Date.now() - t0}ms`);
+    const result = {};
 
-  console.log(`🔑 Fetching all keys with concurrency=${CONCURRENCY}...`);
-  const t1 = Date.now();
+    let currentKid = null;
+    let currentKey = null;
+    let currentTvgId = null;
+    let currentGroup = null;
+    let currentLogo = null;
+    let currentChannel = null;
+    let currentUserAgent = null;
 
-  const pool = createPool(CONCURRENCY);
-  let done = 0;
+    for (const line of lines) {
+      const trimmed = line.trim();
 
-  const resolved = await Promise.all(
-    entries.map(async (entry) => {
-      const key = entry.keyUrl ? await fetchKey(pool, entry.keyUrl) : null;
-      done++;
-      process.stdout.write(`\r   ${done}/${entries.length} keys fetched...`);
-      return { ...entry, key };
-    })
-  );
+      // Extract info from #EXTINF
+      if (trimmed.startsWith("#EXTINF:")) {
+        const tvgIdMatch = trimmed.match(/tvg-id="(\d+)"/);
+        const groupMatch = trimmed.match(/group-title="([^"]+)"/);
+        const logoMatch = trimmed.match(/tvg-logo="([^"]+)"/);
+        const channelMatch = trimmed.match(/,(.*)$/);
 
-  console.log(`\n⚡ All keys fetched in ${Date.now() - t1}ms`);
+        currentTvgId = tvgIdMatch ? tvgIdMatch[1] : null;
+        currentGroup = groupMatch ? groupMatch[1] : null;
+        currentLogo = logoMatch ? logoMatch[1] : null;
+        currentChannel = channelMatch ? channelMatch[1] : null;
+      }
 
-  const result = {};
-  for (const e of resolved) {
-    result[e.tvgId] = {
-      key_url:      e.keyUrl || null,
-      key:          e.key,
-      url:          e.url,
-      group_title:  e.group,
-      tvg_logo:     e.logo,
-      channel_name: e.channel,
-      user_agent:   e.userAgent || null
-    };
+      // Extract kid and key
+      else if (trimmed.startsWith("#KODIPROP:inputstream.adaptive.license_key=")) {
+        const [kid, key] = trimmed.split("=")[1].split(":");
+        currentKid = kid;
+        currentKey = key;
+      }
+
+      // Extract user-agent
+      else if (trimmed.startsWith("#EXTVLCOPT:http-user-agent=")) {
+        currentUserAgent = trimmed.split("=")[1];
+      }
+
+      // Extract URL after license
+      else if (currentKid && currentKey && currentTvgId && trimmed.startsWith("http")) {
+        // Remove extra &xxx=... if present
+        let cleanUrl = trimmed.split("&xxx=")[0];
+
+        // --- MODIFICATION START ---
+        // Replace the old domain with the new domain
+        cleanUrl = cleanUrl.replace("jiotvbpkmob.cdn.jio.com", "jiotvbpkmob.cdn.jio.com");
+        // --- MODIFICATION END ---
+
+        result[currentTvgId] = {
+          kid: currentKid,
+          key: currentKey,
+          url: cleanUrl,
+          group_title: currentGroup,
+          tvg_logo: currentLogo,
+          channel_name: currentChannel,
+          user_agent: currentUserAgent
+        };
+
+        // Reset for next entry
+        currentKid = null;
+        currentKey = null;
+        currentTvgId = null;
+        currentGroup = null;
+        currentLogo = null;
+        currentChannel = null;
+        currentUserAgent = null;
+      }
+    }
+
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(result, null, 2), "utf-8");
+    console.log("✅ stream.json saved successfully.");
+
+  } catch (err) {
+    console.error("❌ Failed to fetch M3U:", err.message);
+    process.exit(1);
   }
-
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(result, null, 2), "utf-8");
-  console.log(`\n✅ stream.json saved — ${Object.keys(result).length} channels in ${Date.now() - t0}ms total`);
 }
 
-fetchAndSaveJson().catch(err => {
-  console.error("❌ Fatal:", err.message);
-  process.exit(1);
-});
+fetchAndSaveJson();
