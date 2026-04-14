@@ -4,15 +4,23 @@ const fs = require("fs");
 const STREAM_URL = "https://elitebeam.shop/Jtv/AXQDcW/Playlist.m3u";
 const OUTPUT_FILE = "stream.json";
 
+async function fetchKey(keyUrl) {
+  try {
+    const res = await axios.get(keyUrl, { timeout: 8000, responseType: "text" });
+    return res.data.trim();
+  } catch (err) {
+    console.warn(`⚠️  Could not fetch key from ${keyUrl}: ${err.message}`);
+    return null;
+  }
+}
+
 async function fetchAndSaveJson() {
   try {
     const response = await axios.get(STREAM_URL, { responseType: "text" });
     const lines = response.data.split("\n");
-
     const result = {};
 
-    let currentKid = null;
-    let currentKey = null;
+    let currentKeyUrl = null;
     let currentTvgId = null;
     let currentGroup = null;
     let currentLogo = null;
@@ -32,30 +40,34 @@ async function fetchAndSaveJson() {
         currentTvgId = tvgIdMatch ? tvgIdMatch[1] : null;
         currentGroup = groupMatch ? groupMatch[1] : null;
         currentLogo = logoMatch ? logoMatch[1] : null;
-        currentChannel = channelMatch ? channelMatch[1] : null;
+        currentChannel = channelMatch ? channelMatch[1].trim() : null;
       }
 
-      // Extract kid and key
+      // Extract the full license key URL (don't split it — it's a full URL)
       else if (trimmed.startsWith("#KODIPROP:inputstream.adaptive.license_key=")) {
-        const [kid, key] = trimmed.split("=")[1].split(":");
-        currentKid = kid;
-        currentKey = key;
+        // Everything after the first '=' is the URL
+        const eqIndex = trimmed.indexOf("=");
+        currentKeyUrl = trimmed.substring(eqIndex + 1).trim();
       }
 
       // Extract user-agent
       else if (trimmed.startsWith("#EXTVLCOPT:http-user-agent=")) {
-        currentUserAgent = trimmed.split("=")[1];
+        currentUserAgent = trimmed.split("=").slice(1).join("=").trim();
+        if (currentUserAgent === "@allinone_reborn") currentUserAgent = null;
       }
 
-      // Extract URL after license
-      else if (currentKid && currentKey && currentTvgId && trimmed.startsWith("http")) {
-        // Remove extra &xxx=... if present
-        const cleanUrl = trimmed.split("&xxx=")[0];
+      // Stream URL — build the entry
+      else if (currentTvgId && trimmed.startsWith("http") && !trimmed.startsWith("#")) {
+        // Use the stream URL as-is (or strip duplicate query params if needed)
+        const streamUrl = trimmed;
+
+        console.log(`🔑 Fetching key for channel ${currentTvgId} (${currentChannel})...`);
+        const fetchedKey = currentKeyUrl ? await fetchKey(currentKeyUrl) : null;
 
         result[currentTvgId] = {
-          kid: currentKid,
-          key: currentKey,
-          url: cleanUrl,
+          key_url: currentKeyUrl,          // original key endpoint
+          key: fetchedKey,                 // actual key value fetched from URL
+          url: streamUrl,
           group_title: currentGroup,
           tvg_logo: currentLogo,
           channel_name: currentChannel,
@@ -63,8 +75,7 @@ async function fetchAndSaveJson() {
         };
 
         // Reset for next entry
-        currentKid = null;
-        currentKey = null;
+        currentKeyUrl = null;
         currentTvgId = null;
         currentGroup = null;
         currentLogo = null;
@@ -74,8 +85,7 @@ async function fetchAndSaveJson() {
     }
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(result, null, 2), "utf-8");
-    console.log("✅ stream.json saved successfully.");
-
+    console.log(`\n✅ stream.json saved with ${Object.keys(result).length} channels.`);
   } catch (err) {
     console.error("❌ Failed to fetch M3U:", err.message);
     process.exit(1);
