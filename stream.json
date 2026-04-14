@@ -1178,15 +1178,6 @@
     "channel_name": "Discovery Kids Tamil",
     "user_agent": null
   },
-  "551": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=551&token=AXQDcW",
-    "group_title": "Kids",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/TEST14_HD.png",
-    "channel_name": "TEST14 HD",
-    "user_agent": null
-  },
   "554": {
     "kid": "https",
     "key": "//elitebeam.shop/Jtv/keys.php?id",
@@ -2258,15 +2249,6 @@
     "channel_name": "DD Malayalam",
     "user_agent": null
   },
-  "701": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=701&token=AXQDcW",
-    "group_title": "Entertainment",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Dangal.png",
-    "channel_name": "Dangal",
-    "user_agent": null
-  },
   "702": {
     "kid": "https",
     "key": "//elitebeam.shop/Jtv/keys.php?id",
@@ -2544,15 +2526,6 @@
     "group_title": "Telugu",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Raj_Music_Telugu.png",
     "channel_name": "Raj Music Telugu",
-    "user_agent": null
-  },
-  "738": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=738&token=AXQDcW",
-    "group_title": "Marathi",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Fakt_Marathi.png",
-    "channel_name": "Fakt Marathi",
     "user_agent": null
   },
   "739": {
@@ -3029,7 +3002,7 @@
     "url": "https://elitebeam.shop/Jtv/mpd.php?id=816&token=AXQDcW",
     "group_title": "Kids",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Cartoon_Network_Hindi.png",
-    "channel_name": "Cartoon Network Hindi",
+    "channel_name": "Cartoon Network",
     "user_agent": null
   },
   "817": {
@@ -4004,15 +3977,6 @@
     "channel_name": "Vande Gujarat 4",
     "user_agent": null
   },
-  "1073": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=1073&token=AXQDcW",
-    "group_title": "Kannada",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Samara_News.png",
-    "channel_name": "Samara News",
-    "user_agent": null
-  },
   "1075": {
     "kid": "https",
     "key": "//elitebeam.shop/Jtv/keys.php?id",
@@ -4038,15 +4002,6 @@
     "group_title": "Devotional",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Soham_TV.png",
     "channel_name": "Soham TV",
-    "user_agent": null
-  },
-  "1079": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=1079&token=AXQDcW",
-    "group_title": "Kids",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/CN_HD_English.png",
-    "channel_name": "Cartoon Network HD+ English",
     "user_agent": null
   },
   "1080": {
@@ -4506,15 +4461,6 @@
     "group_title": "Marathi",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Marathi_SD.png",
     "channel_name": "Sony Marathi SD",
-    "user_agent": null
-  },
-  "1148": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=1148&token=AXQDcW",
-    "group_title": "English",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/TEST8_HD.png",
-    "channel_name": "TEST8 HD",
     "user_agent": null
   },
   "1151": {
@@ -5840,24 +5786,6 @@
     "channel_name": "Himshiksha Vocational",
     "user_agent": null
   },
-  "1566": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=1566&token=AXQDcW",
-    "group_title": "Telugu",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/AP_BIE_SCIENCE.png",
-    "channel_name": "AP-BIE-SCIENCE",
-    "user_agent": null
-  },
-  "1567": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=1567&token=AXQDcW",
-    "group_title": "Telugu",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/AP_CIE_SIVE.png",
-    "channel_name": "AP-CIE-SIVE",
-    "user_agent": null
-  },
   "1568": {
     "kid": "https",
     "key": "//elitebeam.shop/Jtv/keys.php?id",
@@ -6153,15 +6081,6 @@
     "group_title": "Educational",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/PTD_Chhattisgarrh.png",
     "channel_name": "PTD Chhattisgarrh",
-    "user_agent": null
-  },
-  "1675": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=1675&token=AXQDcW",
-    "group_title": "Sports",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ESG.png",
-    "channel_name": "ESG TV",
     "user_agent": null
   },
   "1691": {
@@ -6821,24 +6740,6 @@
     "channel_name": "Raftaar Media",
     "user_agent": null
   },
-  "2000": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=2000&token=AXQDcW",
-    "group_title": "Entertainment",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/PlusTest1.png",
-    "channel_name": "PlusTest1",
-    "user_agent": null
-  },
-  "2001": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=2001&token=AXQDcW",
-    "group_title": "Entertainment",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/PlusTest2_HD.png",
-    "channel_name": "PlusTest2 HD",
-    "user_agent": null
-  },
   "2002": {
     "kid": "https",
     "key": "//elitebeam.shop/Jtv/keys.php?id",
@@ -7305,15 +7206,6 @@
     "group_title": "English",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_Zest_HD.png",
     "channel_name": "Zee Zest HD",
-    "user_agent": null
-  },
-  "2758": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=2758&token=AXQDcW",
-    "group_title": "Marathi",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ZeeChitramandir.png",
-    "channel_name": "Zee Chitramandir",
     "user_agent": null
   },
   "2759": {
@@ -7883,15 +7775,6 @@
     "channel_name": "Garvi Gujarat",
     "user_agent": null
   },
-  "3040": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=3040&token=AXQDcW",
-    "group_title": "Malayalam",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_Keralam_SD.png",
-    "channel_name": "Zee Keralam SD",
-    "user_agent": null
-  },
   "3041": {
     "kid": "https",
     "key": "//elitebeam.shop/Jtv/keys.php?id",
@@ -8043,15 +7926,6 @@
     "group_title": "Kannada",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Vistaar_News.png",
     "channel_name": "Vistaar News",
-    "user_agent": null
-  },
-  "3071": {
-    "kid": "https",
-    "key": "//elitebeam.shop/Jtv/keys.php?id",
-    "url": "https://elitebeam.shop/Jtv/mpd.php?id=3071&token=AXQDcW",
-    "group_title": "Entertainment",
-    "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/TV_Asia.png",
-    "channel_name": "TV Asia Powered by Shemaroo",
     "user_agent": null
   },
   "3076": {
@@ -9365,7 +9239,7 @@
     "url": "https://elitebeam.shop/Jtv/mpd.php?id=3436&token=AXQDcW",
     "group_title": "Kids",
     "tvg_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/CNHDHindi.png",
-    "channel_name": "Cartoon Network HD+ Hindi",
+    "channel_name": "Cartoon Network HD+",
     "user_agent": null
   },
   "3444": {
