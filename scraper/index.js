@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://pocket-tv-tamil-5afe35.gitlab.io/jiostar.m3u";
+const STREAM_URL = "https://perelive.pages.dev/jiotv.m3u";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
@@ -18,6 +18,7 @@ async function fetchAndSaveJson() {
     let currentLogo = null;
     let currentChannel = null;
     let currentUserAgent = null;
+    let currentCookie = null; // 1. Variable to store the cookie
 
     for (const line of lines) {
       const trimmed = line.trim();
@@ -47,20 +48,36 @@ async function fetchAndSaveJson() {
         currentUserAgent = trimmed.split("=")[1];
       }
 
-      // Extract URL after license
+      // 2. Extract Cookie from #EXTHTTP
+      else if (trimmed.startsWith("#EXTHTTP:")) {
+        try {
+          // Remove the prefix to get the JSON part
+          const jsonStr = trimmed.replace("#EXTHTTP:", "");
+          const parsed = JSON.parse(jsonStr);
+          
+          if (parsed && parsed.cookie) {
+            currentCookie = parsed.cookie;
+          }
+        } catch (e) {
+          console.warn("Skipping malformed EXTHEADER line");
+        }
+      }
+
+      // Extract URL and build object
       else if (currentKid && currentKey && currentTvgId && trimmed.startsWith("http")) {
         // Remove extra &xxx=... if present
-        let cleanUrl = trimmed.split("&xxx=")[0];
+        const cleanUrl = trimmed.split("&xxx=")[0];
 
-        // --- MODIFICATION START ---
-        // Replace the old domain with the new domain
-        cleanUrl = cleanUrl.replace("jiotvbpkmob.cdn.jio.com", "jiotvbpkmob.cdn.jio.com");
-        // --- MODIFICATION END ---
+        // 3. Append cookie to URL if it exists
+        let finalUrl = cleanUrl;
+        if (currentCookie) {
+          finalUrl += `?${currentCookie}`;
+        }
 
         result[currentTvgId] = {
           kid: currentKid,
           key: currentKey,
-          url: cleanUrl,
+          url: finalUrl,
           group_title: currentGroup,
           tvg_logo: currentLogo,
           channel_name: currentChannel,
@@ -75,6 +92,7 @@ async function fetchAndSaveJson() {
         currentLogo = null;
         currentChannel = null;
         currentUserAgent = null;
+        currentCookie = null; // 4. Reset cookie
       }
     }
 
