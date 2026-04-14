@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://elitebeam.shop/Jtv/AXQDcW/Playlist.m3u";
+const STREAM_URL = "https://pocket-tv-tamil-5afe35.gitlab.io/jiostar.m3u";
 const OUTPUT_FILE = "stream.json";
 const CONCURRENCY = 50; // simultaneous key fetches
 
