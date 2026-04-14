@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://allinonereborn.online/jiotv-m3u/playlist009.m3u8";
+const STREAM_URL = "https://elitebeam.shop/Jtv/AXQDcW/Playlist.m3u";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
