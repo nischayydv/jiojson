@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const STREAM_URL = "https://binge-jiotv.pages.dev/data/id.json";
+const STREAM_URL = "https://allinonereborn.online/m3u/jtv145.m3u";
 const OUTPUT_FILE = "stream.json";
 
 async function fetchAndSaveJson() {
